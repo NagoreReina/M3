@@ -1,0 +1,25 @@
+﻿@model List<Producto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<div class="row">
+
+@{ foreach (Producto x in Model)
+    {
+        <div class="card col-sm-12 col-lg-4 col-md-6" style="width: 18rem;">
+            <img src="@x.Imagen" class="card-img-top cardImagen" alt="@x.Nombre">
+            <div class="card-body">
+                <h5 class="card-title">@x.Nombre</h5>
+                <p class="card-text">@x.Precio</p>
+                <p class="card-text">@x.Tipo</p>
+                <p class="card-text">@x.Descripcion</p>
+                <p class="card-text">@x.FechaCaducidad</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" alt="Like" class="heartIco"/>
+            </div>
+        </div>
+    }
+}
+</div>
+
