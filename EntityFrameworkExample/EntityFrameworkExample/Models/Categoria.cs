@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 
 namespace EntityFrameworkExample.Models
 {
-    public class Autor
+    public class Categoria
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public DateTime FechaNacimiento { get; set; }
-        public List<Obra> Obras { get; set; }
-
-
+        public List<ObraCategoria> ObraCategorias { get; set; }
     }
 }

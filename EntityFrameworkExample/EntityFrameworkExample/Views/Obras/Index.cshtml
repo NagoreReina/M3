@@ -24,6 +24,9 @@
             <th>
                 Imagen
             </th>
+            <th>
+                Categorias
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -40,7 +43,16 @@
                 @obra.Autor.Nombre @obra.Autor.Apellido
             </td>
             <td>
-                <img src="@obra.Imagen" alt="Portada de @obra.Titulo"/>
+                <img src="@obra.Imagen" alt="Portada de @obra.Titulo" />
+            </td>
+            <td>
+                <ul>
+                @foreach(ObraCategoria obraCategoria in obra.ObraCategorias)
+                {
+                    <li>@obraCategoria.Categoria.Nombre</li>
+                }
+
+                </ul>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@obra.Id">Edit</a> |

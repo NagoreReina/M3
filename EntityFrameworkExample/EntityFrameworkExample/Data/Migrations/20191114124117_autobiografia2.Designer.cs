@@ -4,14 +4,16 @@ using EntityFrameworkExample.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EntityFrameworkExample.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191114124117_autobiografia2")]
+    partial class autobiografia2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,21 +71,6 @@ namespace EntityFrameworkExample.Data.Migrations
                     b.ToTable("Autores");
                 });
 
-            modelBuilder.Entity("EntityFrameworkExample.Models.Categoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categorias");
-                });
-
             modelBuilder.Entity("EntityFrameworkExample.Models.Obra", b =>
                 {
                     b.Property<int>("Id")
@@ -108,28 +95,6 @@ namespace EntityFrameworkExample.Data.Migrations
                     b.HasIndex("AutorId");
 
                     b.ToTable("Obras");
-                });
-
-            modelBuilder.Entity("EntityFrameworkExample.Models.ObraCategoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ObraId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("ObraId");
-
-                    b.ToTable("ObraCategorias");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -346,17 +311,6 @@ namespace EntityFrameworkExample.Data.Migrations
                         .HasForeignKey("AutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("EntityFrameworkExample.Models.ObraCategoria", b =>
-                {
-                    b.HasOne("EntityFrameworkExample.Models.Categoria", "Categoria")
-                        .WithMany("ObraCategorias")
-                        .HasForeignKey("CategoriaId");
-
-                    b.HasOne("EntityFrameworkExample.Models.Obra", "Obra")
-                        .WithMany("ObraCategorias")
-                        .HasForeignKey("ObraId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

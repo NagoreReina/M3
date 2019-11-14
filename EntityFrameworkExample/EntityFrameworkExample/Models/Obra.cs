@@ -13,5 +13,6 @@ namespace EntityFrameworkExample.Models
         public int AutorId { get; set; }
         public Autor Autor { get; set; }
         public string Imagen { get; set; }
+        public List<ObraCategoria> ObraCategorias { get; set; }
     }
 }

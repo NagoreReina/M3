@@ -22,7 +22,9 @@ namespace EntityFrameworkExample.Controllers
         // GET: Obras
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Obras.Include(o => o.Autor);
+            var applicationDbContext = _context.Obras.Include(o => o.Autor)
+                .Include(x => x.ObraCategorias)
+                .ThenInclude(y => y.Categoria);
             return View(await applicationDbContext.ToListAsync());
         }
 
