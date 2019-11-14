@@ -1,0 +1,45 @@
+﻿@model IEnumerable<EjercicioDepartamentos.Models.Empleado>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<form asp-controller="Empleados" asp-action="Index">
+    <select id="Selector" name="departamento">
+        <option value=""> Cualquiera </option>
+        @{ 
+            List<string> departamentos = ViewData["departamentos"] as List<string>;
+            //List<string> departamentos = ViewData["departamentos"] as List<string>;
+            //departamentos = Model.Select(x => x.Departamento.Nombre).Distinct().ToList();
+        }
+        @foreach (string departamento in departamentos)
+        {
+
+            <option value="@departamento">@departamento</option>
+        }
+    </select>
+    <input type="text" placeholder="Nombre" name="nombre" />
+    <input type="submit" value="Buscar" />
+</form>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="row">
+    @foreach (Empleado empleado in Model)
+    {
+        <div class="col-md-6 col-lg-4 col-sm-12 empleado" style="width: 18rem;">
+            <img src="@empleado.Imagen" data-toggle="collapse" href="#collapse-@empleado.Id" class="card-img-top rounded-circle" alt="Imagen de @empleado.Nombre">
+            <div class="collapse" id="collapse-@empleado.Id">
+                <div>@empleado.Departamento.Nombre</div>
+                <h5>@empleado.Nombre @empleado.Apellido</h5>
+                <ul class="list-group">
+                    <li class="list-group-item">Telefono: @empleado.Telefono</li>
+                    <li class="list-group-item">Email: @empleado.Email</li>
+                    <li class="list-group-item">Empresa: @empleado.Departamento.Empresa.Nombre</li>
+                </ul>
+            </div>
+        </div>
+            
+    }
+</div>

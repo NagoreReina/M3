@@ -4,6 +4,10 @@
 }
 
 <h1>Empleados</h1>
+<form asp-controller="Empleados" asp-action="Index" >
+    <input type="text" placeholder="Nombre" name="nombre"/>
+    <input type="submit" value="Buscar"/>
+</form>
 <table class="table-bordered table">
     <thead class="thead-light">
     <tr>

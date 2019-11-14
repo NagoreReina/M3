@@ -9,7 +9,7 @@ namespace FirstExample.Controllers
 {
     public class EmpleadosController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string nombre)
         {
             List<Empleado> empleados = new List<Empleado>()
             {
@@ -55,8 +55,11 @@ namespace FirstExample.Controllers
                 },
             };
             //empleados = empleados.Where(x =>  x.Nombre[0] == 'N').ToList();
-            Empleado empleado = empleados.FirstOrDefault(x => x.Nombre[0] == 'N');
-            return View(empleados.OrderBy(empleado => empleado.Apellido).ToList());
+            if (!String.IsNullOrEmpty(nombre))
+            {
+                empleados = empleados.Where(x => x.Nombre.ToLower().Contains(nombre.ToLower())).ToList();
+            }
+            return View(empleados);
         }
         public IActionResult Detalle()
         {

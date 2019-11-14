@@ -22,16 +22,35 @@ namespace FirstExercise.Controllers
             new Producto(){Id= 8, Nombre = "Pizza vegetal", Descripcion= "apto para veganos e intolerantes a la lactosa", Tipo= "Nevera", Precio = 2.59, FechaCaducidad = Convert.ToDateTime("11/11/2020"), Imagen = "https://www.noticiasde.info/sites/default/files/inline-images/Captura%20de%20pantalla%202019-06-26%20a%20las%2020.15.30.jpg"},
             new Producto(){Id= 9, Nombre = "Salchichas Veganas", Descripcion= "Preparado a base de soja", Tipo= "Nevera", Precio = 1.25, FechaCaducidad = Convert.ToDateTime("11/10/2020"), Imagen = "https://1.bp.blogspot.com/-CaNrXkSERjY/W83chwUn93I/AAAAAAAAF-U/vInrwOs1Xkcw2s5MtoEgD85ZRyE4I2VFACKgBGAs/s1600/salchichas-vegana-hacendado-mercadona-1.jpg"},
         };
-        public IActionResult Index()
+        public IActionResult Index(string nombre, string tipo)
         {
+            List<string> tipoProductos = new List<string>();
+            tipoProductos = productos.Select(x => x.Tipo).Distinct().ToList();
+            ViewData["tiposProductos"] = tipoProductos;
+            if (!String.IsNullOrEmpty(tipo))
+            {
+                productos = productos.Where(x => x.Tipo == tipo).ToList();
+            }
+            if (!String.IsNullOrEmpty(nombre))
+            {
+                productos = productos.Where(x=> x.Nombre.ToLower().Contains(nombre.ToLower()) || x.Descripcion.ToLower().Contains(nombre.ToLower())).ToList();
+            }
             return View(productos.OrderBy(x=> x.Nombre).ToList());
         }
         public IActionResult ProductosPrecio()
         {
             return View(productos.OrderBy(x => x.Precio).ToList());
         }
-        public IActionResult ProductosTipo()
+        public IActionResult ProductosTipo( string tipo)
         {
+            List<string> tipoProductos = new List<string>();
+            tipoProductos = productos.Select(x => x.Tipo).Distinct().ToList();
+            ViewData["tiposProductos"] = tipoProductos;
+            if (tipo != null)
+            {
+                productos = productos.Where(x => x.Tipo == tipo).ToList();
+            }
+
             return View(productos.OrderBy(x => x.Tipo).ToList());
         }
         public IActionResult Favoritos()
@@ -39,4 +58,5 @@ namespace FirstExercise.Controllers
             return View(productos);
         }
     }
+
 }

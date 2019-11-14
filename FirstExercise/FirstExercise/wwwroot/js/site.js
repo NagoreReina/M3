@@ -43,8 +43,8 @@ for (let i = 0; i < allCards.length; i++) {
         }
     })
 }
-let whatPage = document.getElementById("Favoritos");
-if (whatPage != null) {
+let PageF = document.getElementById("Favoritos");
+if (PageF != null) {
     for (let i = 0; i < allCards.length; i++) {
         let productName = allCards[i].lastElementChild.childNodes[1].innerHTML;
         if (!likedCards.includes(productName)) {
@@ -52,4 +52,16 @@ if (whatPage != null) {
             i--;
         }
     }
+}
+
+let PageT = document.getElementById("Tipo");
+if (PageT != null) {
+    let selector = document.getElementById("Selector");
+    selector.addEventListener("change", function () {
+
+        fetch('https://localhost:44358/Productos/ProductosTipo?tipo=' + selector.value, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' }
+        })
+    })
 }

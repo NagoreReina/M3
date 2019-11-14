@@ -2,8 +2,16 @@
 @{
     ViewData["Title"] = "ProductosTipo";
 }
-
-<h1>Productos Tipo</h1>
+@{List<string> TipoProductos = ViewData["tiposProductos"] as List<string>; }
+<h1 id="Tipo">Productos Tipo</h1>
+<form asp-controller="Productos" asp-action="ProductosTipo">
+    <select id="Selector">
+        @foreach (string value in TipoProductos)
+        {
+            <option value="@value" name="tipo">@value</option>
+        }
+    </select>
+</form>
 <div class="row">
     @{ foreach (Producto x in Model)
         {

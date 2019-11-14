@@ -1,0 +1,45 @@
+﻿@model IEnumerable<EjercicioDepartamentos.Models.Departamento>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th data-sortable="true" data-field="nombre">
+                Nombre
+            </th>
+            <th data-sortable="true" data-field="abreviatura">
+                Abreviatura
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Departamento departamento in Model)
+        {
+            <tr>
+                <td>
+                    @departamento.Nombre
+                </td>
+                <td>
+                    @departamento.Abreviatura
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@departamento.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@departamento.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@departamento.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
