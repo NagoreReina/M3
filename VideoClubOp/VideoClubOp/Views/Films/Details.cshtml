@@ -1,0 +1,38 @@
+﻿@model VideoClubOp.Models.Film
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.Title</h1>
+
+<div>
+
+    <div class="row">
+        <div class="card col-lg-4 col-md-6 col-sm-12" style="width: 18rem;">
+            <img src="@Model.Image" class="card-img-top" alt="@Model.Title">
+            <div>
+                <p class="card-text">@Model.Sinopsis</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Genero: @Model.Genre</li>
+                    @if (@Model.Rented == true)
+                    {
+                        <li class="list-group-item">Disponible: Si</li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item">Disponible: No</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <p>Para confirmar alquiler pincha aquí</p>
+                <a class="btn btn-primary" role="button" aria-expanded="false" asp-controller="UserFilms" asp-action="Rent" asp-route-filmId="@Model.Id">Alquilar</a>
+            <div>
+                <a asp-action="Index">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>
+

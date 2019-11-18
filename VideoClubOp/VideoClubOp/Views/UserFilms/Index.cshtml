@@ -1,0 +1,80 @@
+﻿@model IEnumerable<VideoClubOp.Models.UserFilm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Mis alquileres</h1>
+<form asp-controller="UserFilms" asp-action="Index">
+    <select id="Selector" name="DateReturn">
+        <option value=""> Cualquiera </option>
+        <option value="Null">Sin devolver</option>
+        <option value="Returned">Devueltas</option>
+    </select>
+    <input type="text" placeholder="Titulo..." name="title" />
+    <input type="submit" value="Buscar" />
+</form>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Fecha Alquiler
+            </th>
+            <th>
+                Fecha Devolución
+            </th>
+            <th>
+                Titulo
+            </th>
+            <th>
+                Imagen
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (UserFilm userFilm in Model) {
+        <tr>
+            @if (userFilm.DateRental.AddDays(2) < DateTime.Today  && userFilm.DateReturn == null)
+            {
+                <td class="table-danger">
+                    @userFilm.DateRental
+                </td>
+
+                <td class="table-danger">
+                    Has sobrepasado el limite de tiempo de alquiler, se cobrará un extra.
+                </td>
+            }
+            else
+            {
+                <td>
+                    @userFilm.DateRental
+                </td>
+
+                <td>
+                    @userFilm.DateReturn
+                </td>
+            }
+            <td>
+                @userFilm.Film.Title
+            </td>
+            <td>
+                <img src="@userFilm.Film.Image" class="filmImgUserFilms" alt="Caratula de la pelicula" />
+            </td>
+            <td>
+                @if (userFilm.DateReturn == null)
+                {
+                    <a class="btn btn-primary" role="button" aria-expanded="false" asp-controller="UserFilms" asp-action="Details" asp-route-Id="@userFilm.Id">Devolver</a>
+                }
+                else
+                {
+                    <p>Pelicula Devuelta</p>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

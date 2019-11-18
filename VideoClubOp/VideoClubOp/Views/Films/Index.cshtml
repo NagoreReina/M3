@@ -1,0 +1,62 @@
+﻿@model IEnumerable<VideoClubOp.Models.Film>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Peliculas</h1>
+<form asp-controller="Films" asp-action="Index">
+    <select id="Selector" name="genre">
+        <option value=""> Any </option>
+        @{
+            List<string> genreList = ViewData["genre"] as List<string>;
+        }
+        @foreach (string genre in genreList)
+        {
+            <option value="@genre">@genre</option>
+        }
+    </select>
+    <input type="text" placeholder="Titulo..." name="title" />
+    <input type="submit" value="Buscar" />
+</form>
+<div class="row">
+    @foreach (Film film in Model)
+    {
+    <div class="card col-lg-2 col-mg-3 col-sm-3 col-6" style="width: 18rem;">
+        <img src="@film.Image" data-toggle="collapse" href="#collapseInfo-@film.Id" class="card-img-top" alt="@film.Title">
+        <div class="card-body">
+            <h5 class="card-title">@film.Title</h5>
+        </div>
+        <div class="collapse" id="collapseInfo-@film.Id">
+            <p class="card-text">@film.Sinopsis</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Genero: @film.Genre</li>
+                @if (film.Rented == false)
+                {
+                    <li class="list-group-item">Disponible: Si</li>
+                }
+                else
+                {
+                    <li class="list-group-item">Disponible: No</li>
+                }
+            </ul>
+        </div>
+        @if (film.Rented == false)
+        {
+            <div class="card-body">
+                <form action="/Films/Details/@film.Id">
+                    <input class="btn btn-primary" type="submit" value="Alquilar" />
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="card-body">
+                <p class="card-text">No Disponible</p>
+            </div>
+        }
+
+    </div>
+    }
+</div>
+
