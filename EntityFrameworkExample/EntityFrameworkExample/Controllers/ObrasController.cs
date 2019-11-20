@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EntityFrameworkExample.Data;
 using EntityFrameworkExample.Models;
+using EntityFrameworkExample.Models.ViewModels;
 
 namespace EntityFrameworkExample.Controllers
 {
@@ -48,10 +49,13 @@ namespace EntityFrameworkExample.Controllers
         }
 
         // GET: Obras/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["AutorId"] = new SelectList(_context.Autores, "Id", "Id");
-            return View();
+            CrearObraVM crearObraVM = new CrearObraVM
+            {
+                Autores = await _context.Autores.ToListAsync()
+            };
+            return View(crearObraVM);
         }
 
         // POST: Obras/Create
@@ -59,16 +63,15 @@ namespace EntityFrameworkExample.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,AnioPublicacion,AutorId")] Obra obra)
+        public async Task<IActionResult> Create(CrearObraVM covm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(obra);
+                _context.Add(covm.Obra);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(_context.Autores, "Id", "Id", obra.AutorId);
-            return View(obra);
+            return View(covm);
         }
 
         // GET: Obras/Edit/5

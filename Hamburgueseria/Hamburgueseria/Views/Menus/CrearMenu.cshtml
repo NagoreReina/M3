@@ -1,0 +1,91 @@
+﻿@model Hamburgueseria.Models.ViewModels.CrearMenuVM
+
+@{
+    ViewData["Title"] = "CrearMenu";
+}
+
+<h1>Escoge tu menu</h1>
+
+<hr />
+<h3>Entrantes</h3>
+<form>
+    <div class="form-check">
+        <div class="row">
+            @foreach (Entrantes entrante in Model.Entrantes)
+            {
+                <div class="card col-md-6 col-sm-12 col-lg-3" style="width: 18rem;">
+                    <img class="card-img-top" src="@entrante.Imagen" alt="@entrante.Nombre">
+                    <div class="card-body">
+                        <h5 class="card-title">@entrante.Nombre</h5>
+                        <p class="card-text">@entrante.Descripcion</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Ingredientes: @entrante.Ingredientes</li>
+                    </ul>
+                    <div class="card-body">
+                        <input class="form-check-input" type="radio" name="entrantes" id="entrante-@entrante.Id" value="@entrante.Id">
+                        <label class="form-check-label" for="exampleRadios1">
+                            Elegir
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <h3>Principales</h3>
+    <div class="form-check">
+        <div class="row">
+            @foreach (Principales principal in Model.Principales)
+            {
+                <div class="card col-md-6 col-sm-12 col-lg-3" style="width: 18rem;">
+                    <img class="card-img-top" src="@principal.Imagen" alt="@principal.Nombre">
+                    <div class="card-body">
+                        <h5 class="card-title">@principal.Nombre</h5>
+                        <p class="card-text">@principal.Descripcion</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Ingredientes: @principal.Ingredientes</li>
+                    </ul>
+                    <div class="card-body">
+                        <input class="form-check-input" type="radio" name="principal" id="principal-@principal.Id" value="@principal.Id">
+                        <label class="form-check-label" for="exampleRadios1">
+                            Elegir
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-check">
+        <h3>Postres</h3>
+        <div class="row">
+            @foreach (Postres postre in Model.Postres)
+            {
+                <div class="card col-md-6 col-sm-12 col-lg-3" style="width: 18rem;">
+                    <img class="card-img-top" src="@postre.Imagen" alt="@postre.Nombre">
+                    <div class="card-body">
+                        <h5 class="card-title">@postre.Nombre</h5>
+                        <p class="card-text">@postre.Descripcion</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Ingredientes: @postre.Ingredientes</li>
+                    </ul>
+                    <div class="card-body">
+                        <input class="form-check-input" type="radio" name="postres" id="postres-@postre.Id" value="@postre.Id">
+                        <label class="form-check-label" for="exampleRadios1">
+                            Elegir
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div>
+        <button asp-action="Index">Elegir</button>
+    </div>
+</form>
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
