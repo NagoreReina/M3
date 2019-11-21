@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
 using Services.Models;
 
 namespace Services.Services
@@ -16,32 +18,34 @@ namespace Services.Services
         public async Task CreateVideojuegoAsync(Videojuego videojuego)
         {
            await _context.AddAsync(videojuego);
+           await _context.SaveChangesAsync();
            
         }
-
-        public void DeleteVideojuego(Videojuego videojuego)
+        public async Task DeleteVideojuego(Videojuego videojuego)
         {
-            throw new NotImplementedException();
+            _context.Videojuegos.Remove(videojuego);
+            await _context.SaveChangesAsync();
         }
 
-        public Videojuego GetVideojuegoById(int id)
+        public async Task<Videojuego> GetVideojuegoById(int? id)
         {
-            throw new NotImplementedException();
+            return await _context.Videojuegos.FindAsync(id);
         }
 
-        public List<IVideojuegos> GetVideojuegos()
+        public async Task<List<Videojuego>> GetVideojuegos()
         {
-            throw new NotImplementedException();
+            return await _context.Videojuegos.ToListAsync();
         }
 
-        public void UpdateVideojuego(Videojuego videojuego)
+        public async Task UpdateVideojuego(Videojuego videojuego)
         {
-            throw new NotImplementedException();
+            _context.Update(videojuego);
+            await _context.SaveChangesAsync();
         }
 
         public bool VideojuegoExists(int id)
         {
-            throw new NotImplementedException();
+            return _context.Videojuegos.Any(e => e.Id == id);
         }
     }
 }

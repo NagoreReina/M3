@@ -7,22 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TiendaMagic.Data;
 using TiendaMagic.Models;
+using TiendaMagic.Services;
 
 namespace TiendaMagic.Controllers
 {
     public class AppUserPrizesController : Controller
     {
-        private readonly ApplicationDbContext _context;
 
-        public AppUserPrizesController(ApplicationDbContext context)
+        private readonly IAppUserPrizes _appUserPrizes;
+
+        public AppUserPrizesController(IAppUserPrizes appUserPrizes)
         {
-            _context = context;
+            _appUserPrizes = appUserPrizes;
         }
 
         // GET: AppUserPrizes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AppUserPrize.ToListAsync());
+            return View(await _appUserPrizes.GetAppUserPrizeAsync());
         }
 
         // GET: AppUserPrizes/Details/5
@@ -33,8 +35,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var appUserPrize = await _context.AppUserPrize
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var appUserPrize = await _appUserPrizes.GetAppUserPrizeByIdAsync(id);
             if (appUserPrize == null)
             {
                 return NotFound();
@@ -58,8 +59,7 @@ namespace TiendaMagic.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(appUserPrize);
-                await _context.SaveChangesAsync();
+                await _appUserPrizes.CreateAppUserPrizeAsync(appUserPrize);
                 return RedirectToAction(nameof(Index));
             }
             return View(appUserPrize);
@@ -73,7 +73,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var appUserPrize = await _context.AppUserPrize.FindAsync(id);
+            var appUserPrize = await _appUserPrizes.GetAppUserPrizeByIdAsync(id);
             if (appUserPrize == null)
             {
                 return NotFound();
@@ -97,12 +97,11 @@ namespace TiendaMagic.Controllers
             {
                 try
                 {
-                    _context.Update(appUserPrize);
-                    await _context.SaveChangesAsync();
+                    await _appUserPrizes.UpdateAppUserPrizeAsync(appUserPrize);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AppUserPrizeExists(appUserPrize.Id))
+                    if (!_appUserPrizes.AppUserPrizeExists(appUserPrize.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +123,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var appUserPrize = await _context.AppUserPrize
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var appUserPrize = await _appUserPrizes.GetAppUserPrizeByIdAsync(id);
             if (appUserPrize == null)
             {
                 return NotFound();
@@ -139,15 +137,9 @@ namespace TiendaMagic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appUserPrize = await _context.AppUserPrize.FindAsync(id);
-            _context.AppUserPrize.Remove(appUserPrize);
-            await _context.SaveChangesAsync();
+            var appUserPrize = await _appUserPrizes.GetAppUserPrizeByIdAsync(id);
+            await _appUserPrizes.DeleteAppUserPrizeAsync(appUserPrize);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool AppUserPrizeExists(int id)
-        {
-            return _context.AppUserPrize.Any(e => e.Id == id);
         }
     }
 }

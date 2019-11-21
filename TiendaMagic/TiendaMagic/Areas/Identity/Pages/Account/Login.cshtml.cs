@@ -77,7 +77,7 @@ namespace TiendaMagic.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/AppUserPrizes/");
+            returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
@@ -87,6 +87,16 @@ namespace TiendaMagic.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    //PARA HACER QUE CADA UNA REDIRECCIONE DONDE DEBE
+                    AppUser user = await _userManager.GetUserAsync(User);
+                    if (await _userManager.IsInRoleAsync(user, "Client"))
+                    {
+                        returnUrl = returnUrl ?? Url.Content("~/AppUserPrizes/");
+                    }
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        returnUrl = returnUrl ?? Url.Content("~/Queries/");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

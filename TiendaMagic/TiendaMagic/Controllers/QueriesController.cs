@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TiendaMagic.Data;
 using TiendaMagic.Models;
+using TiendaMagic.Services;
 
 namespace TiendaMagic.Controllers
 {
     public class QueriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IQueries _queries;
 
-        public QueriesController(ApplicationDbContext context)
+        public QueriesController(IQueries queries)
         {
-            _context = context;
-        }
+            _queries = queries;
 
+        }
         // GET: Queries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Query.ToListAsync());
+            return View(await _queries.GetQueryAsync());
         }
 
         // GET: Queries/Details/5
@@ -33,8 +34,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var query = await _context.Query
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var query = await _queries.GetQueryByIdAsync(id);
             if (query == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace TiendaMagic.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(query);
-                await _context.SaveChangesAsync();
+                await _queries.CreateQueryAsync(query);
                 return RedirectToAction(nameof(Index));
             }
             return View(query);
@@ -73,7 +72,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var query = await _context.Query.FindAsync(id);
+            var query = await _queries.GetQueryByIdAsync(id);
             if (query == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace TiendaMagic.Controllers
             {
                 try
                 {
-                    _context.Update(query);
-                    await _context.SaveChangesAsync();
+                    await _queries.UpdateQueryAsync(query);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QueryExists(query.Id))
+                    if (!_queries.QueryExists(query.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var query = await _context.Query
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var query = await _queries.GetQueryByIdAsync(id);
             if (query == null)
             {
                 return NotFound();
@@ -139,15 +136,11 @@ namespace TiendaMagic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var query = await _context.Query.FindAsync(id);
-            _context.Query.Remove(query);
-            await _context.SaveChangesAsync();
+            var query = await _queries.GetQueryByIdAsync(id);
+            await _queries.DeleteQueryAsync(query);
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QueryExists(int id)
-        {
-            return _context.Query.Any(e => e.Id == id);
-        }
     }
 }

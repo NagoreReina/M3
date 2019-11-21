@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TiendaMagic.Data;
 using TiendaMagic.Models;
+using TiendaMagic.Services;
 
 namespace TiendaMagic.Controllers
 {
     public class PrizesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPrizes _prizes;
 
-        public PrizesController(ApplicationDbContext context)
+        public PrizesController(IPrizes prizes)
         {
-            _context = context;
+            _prizes = prizes;
         }
 
         // GET: Prizes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Prize.ToListAsync());
+            return View(await _prizes.GetPrizeAsync());
         }
 
         // GET: Prizes/Details/5
@@ -33,8 +34,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var prize = await _context.Prize
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var prize = await _prizes.GetPrizeByIdAsync(id);
             if (prize == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace TiendaMagic.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(prize);
-                await _context.SaveChangesAsync();
+                await _prizes.CreatePrizeAsync(prize);
                 return RedirectToAction(nameof(Index));
             }
             return View(prize);
@@ -73,7 +72,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var prize = await _context.Prize.FindAsync(id);
+            var prize = await _prizes.GetPrizeByIdAsync(id);
             if (prize == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace TiendaMagic.Controllers
             {
                 try
                 {
-                    _context.Update(prize);
-                    await _context.SaveChangesAsync();
+                    await _prizes.UpdatePrizeAsync(prize);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PrizeExists(prize.Id))
+                    if (!_prizes.PrizeExists(prize.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var prize = await _context.Prize
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var prize = await _prizes.GetPrizeByIdAsync(id);
             if (prize == null)
             {
                 return NotFound();
@@ -139,15 +136,10 @@ namespace TiendaMagic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var prize = await _context.Prize.FindAsync(id);
-            _context.Prize.Remove(prize);
-            await _context.SaveChangesAsync();
+            var prize = await _prizes.GetPrizeByIdAsync(id);
+            await _prizes.DeletePrizeAsync(prize);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PrizeExists(int id)
-        {
-            return _context.Prize.Any(e => e.Id == id);
-        }
     }
 }

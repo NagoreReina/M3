@@ -14,6 +14,6 @@ namespace Services
         {
         }
 
-        public DbSet<Services.Models.Videojuego> Videojuegos { get; set; }
+        public DbSet<Videojuego> Videojuegos { get; set; }
     }
 }

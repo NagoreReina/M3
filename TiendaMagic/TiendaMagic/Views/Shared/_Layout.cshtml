@@ -15,7 +15,24 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TiendaMagic</a>
+                @if (_signInManager.IsSignedIn(User))
+                {
+                    AppUser user = await _userManager.GetUserAsync(User);
+                    if (await _userManager.IsInRoleAsync(user, "Client"))
+                    {
+                        <a class="navbar-brand" asp-area="" asp-controller="AppUserPrizes" asp-action="Index">TiendaMagic</a>
+                    }
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        //redireccion del botón de TiendaMagic para el administrador a su pagina principal (hay que cambiarlo)
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TiendaMagic</a>
+                    }
+                }
+                else
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TiendaMagic</a>
+                }
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,15 +42,18 @@
                     @if (_signInManager.IsSignedIn(User))
                     {
                         AppUser user = await _userManager.GetUserAsync(User);
-                        if (await _userManager.IsInRoleAsync(user,"Admin"))
+                        if (await _userManager.IsInRoleAsync(user, "Admin"))
                         {
-                            
+
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Usuarios</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Premios</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Consultas</a>
                                 </li>
                             </ul>
                         }

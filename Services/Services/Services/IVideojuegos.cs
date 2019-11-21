@@ -8,11 +8,11 @@ namespace Services.Services
 {
     public interface IVideojuegos
     {
-        public List<IVideojuegos> GetVideojuegos();
-        public Videojuego GetVideojuegoById(int id);
+        public Task<List<Videojuego>> GetVideojuegos();
+        public Task<Videojuego> GetVideojuegoById(int? id);
         public Task CreateVideojuegoAsync(Videojuego videojuego);
-        public void UpdateVideojuego(Videojuego videojuego);
-        public void DeleteVideojuego(Videojuego videojuego);
+        public Task UpdateVideojuego(Videojuego videojuego);
+        public Task DeleteVideojuego(Videojuego videojuego);
         public bool VideojuegoExists(int id);
     }
 }

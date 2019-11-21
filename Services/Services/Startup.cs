@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Services;
+using Services.Services;
 
 namespace Services
 {
@@ -29,6 +30,8 @@ namespace Services
 
             services.AddDbContext<Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Context")));
+
+            services.AddTransient<IVideojuegos, VideojuegosServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

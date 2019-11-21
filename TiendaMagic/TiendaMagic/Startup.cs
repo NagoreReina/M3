@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TiendaMagic.Models;
+using TiendaMagic.Services;
 
 namespace TiendaMagic
 {
@@ -36,6 +37,10 @@ namespace TiendaMagic
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<IAppUserPrizes, AppUserPrizesService>();
+            services.AddTransient<IPrizes, PrizesService>();
+            services.AddTransient<IQueries, QueriesService>();
+            services.AddTransient<IRegistries, RegistriesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

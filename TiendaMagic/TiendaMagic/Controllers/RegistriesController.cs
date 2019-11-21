@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TiendaMagic.Data;
 using TiendaMagic.Models;
+using TiendaMagic.Services;
 
 namespace TiendaMagic.Controllers
 {
     public class RegistriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRegistries _registries;
 
-        public RegistriesController(ApplicationDbContext context)
+        public RegistriesController(IRegistries registries)
         {
-            _context = context;
+            _registries = registries;
         }
 
         // GET: Registries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Registry.ToListAsync());
+            return View(await _registries.GetRegistryAsync());
         }
 
         // GET: Registries/Details/5
@@ -33,8 +34,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var registry = await _context.Registry
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var registry = await _registries.GetRegistryByIdAsync(id);
             if (registry == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace TiendaMagic.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(registry);
-                await _context.SaveChangesAsync();
+                await _registries.CreateRegistryAsync(registry);
                 return RedirectToAction(nameof(Index));
             }
             return View(registry);
@@ -73,7 +72,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var registry = await _context.Registry.FindAsync(id);
+            var registry = await _registries.GetRegistryByIdAsync(id);
             if (registry == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace TiendaMagic.Controllers
             {
                 try
                 {
-                    _context.Update(registry);
-                    await _context.SaveChangesAsync();
+                    await _registries.UpdateRegistryAsync(registry);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RegistryExists(registry.Id))
+                    if (!_registries.RegistryExists(registry.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace TiendaMagic.Controllers
                 return NotFound();
             }
 
-            var registry = await _context.Registry
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var registry = await _registries.GetRegistryByIdAsync(id);
             if (registry == null)
             {
                 return NotFound();
@@ -139,15 +136,10 @@ namespace TiendaMagic.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var registry = await _context.Registry.FindAsync(id);
-            _context.Registry.Remove(registry);
-            await _context.SaveChangesAsync();
+            var registry = await _registries.GetRegistryByIdAsync(id);
+            await _registries.DeleteRegistryAsync(registry);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RegistryExists(int id)
-        {
-            return _context.Registry.Any(e => e.Id == id);
-        }
     }
 }

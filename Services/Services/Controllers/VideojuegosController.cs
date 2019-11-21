@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Services;
 using Services.Models;
+using Services.Services;
 
 namespace Services.Controllers
 {
     public class VideojuegosController : Controller
     {
-        //private readonly Context _context;
+        private readonly IVideojuegos _videojuegosServices;
 
-        public VideojuegosController(Context context)
+        public VideojuegosController(IVideojuegos videojuegosServices)
         {
-            //_context = context;
+            _videojuegosServices = videojuegosServices;
         }
 
         // GET: Videojuegos
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Videojuegos.ToListAsync());
+            return View(await _videojuegosServices.GetVideojuegos());
         }
 
         // GET: Videojuegos/Details/5
@@ -33,8 +34,7 @@ namespace Services.Controllers
                 return NotFound();
             }
 
-            var videojuego = await _context.Videojuegos
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var videojuego = await _videojuegosServices.GetVideojuegoById(id);
             if (videojuego == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace Services.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(videojuego);
-                await _context.SaveChangesAsync();
+                await _videojuegosServices.CreateVideojuegoAsync(videojuego);
                 return RedirectToAction(nameof(Index));
             }
             return View(videojuego);
@@ -73,7 +72,7 @@ namespace Services.Controllers
                 return NotFound();
             }
 
-            var videojuego = await _context.Videojuegos.FindAsync(id);
+            var videojuego = await _videojuegosServices.GetVideojuegoById(id);
             if (videojuego == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace Services.Controllers
             {
                 try
                 {
-                    _context.Update(videojuego);
-                    await _context.SaveChangesAsync();
+                    await _videojuegosServices.UpdateVideojuego(videojuego);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VideojuegoExists(videojuego.Id))
+                    if (!_videojuegosServices.VideojuegoExists(videojuego.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +122,7 @@ namespace Services.Controllers
                 return NotFound();
             }
 
-            var videojuego = await _context.Videojuegos
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var videojuego = await _videojuegosServices.GetVideojuegoById(id);
             if (videojuego == null)
             {
                 return NotFound();
@@ -139,15 +136,9 @@ namespace Services.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var videojuego = await _context.Videojuegos.FindAsync(id);
-            _context.Videojuegos.Remove(videojuego);
-            await _context.SaveChangesAsync();
+            var videojuego = await _videojuegosServices.GetVideojuegoById(id);
+            await _videojuegosServices.DeleteVideojuego(videojuego);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool VideojuegoExists(int id)
-        {
-            return _context.Videojuegos.Any(e => e.Id == id);
         }
     }
 }
