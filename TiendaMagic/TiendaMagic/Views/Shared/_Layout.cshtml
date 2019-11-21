@@ -24,8 +24,7 @@
                     }
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        //redireccion del botón de TiendaMagic para el administrador a su pagina principal (hay que cambiarlo)
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TiendaMagic</a>
+                        <a class="navbar-brand" asp-area="" asp-controller="Queries" asp-action="Index">TiendaMagic</a>
                     }
                 }
                 else
@@ -50,10 +49,10 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Usuarios</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Premios</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Prizes" asp-action="Index">Premios</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Consultas</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Queries" asp-action="Index">Consultas</a>
                                 </li>
                             </ul>
                         }

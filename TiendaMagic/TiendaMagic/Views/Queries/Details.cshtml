@@ -4,33 +4,27 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+    <h1>@Model.User.Nick</h1>
 
 <div>
-    <h4>Query</h4>
+    <h4>@Model.Date</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
+        <dt class="col-sm-2">
+            Nombre
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
+        <dd class="col-sm-10">
+            @Model.User.Name @Model.User.LastName
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Text)
+        <dt class="col-sm-2">
+            Consulta
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Text)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Resolved)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Resolved)
+        <dd class="col-sm-10">
+            @Model.Text
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Resuelta</a> |
+    <a asp-action="Index">Volver</a>
 </div>

@@ -80,6 +80,7 @@ namespace TiendaMagic.Controllers
             return View(query);
         }
 
+
         // POST: Queries/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -139,6 +140,13 @@ namespace TiendaMagic.Controllers
             var query = await _queries.GetQueryByIdAsync(id);
             await _queries.DeleteQueryAsync(query);
 
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> ChangeToResolved(int id)
+        {
+            Query query = await _queries.GetQueryByIdAsync(id);
+            query.Resolved = true;
+            await _queries.UpdateQueryAsync(query);
             return RedirectToAction(nameof(Index));
         }
 

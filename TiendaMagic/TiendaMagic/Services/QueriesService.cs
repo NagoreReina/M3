@@ -29,12 +29,12 @@ namespace TiendaMagic.Services
 
         public async Task<List<Query>> GetQueryAsync()
         {
-            return await _context.Query.ToListAsync();
+            return await _context.Query.Include(x => x.User).ToListAsync();
         }
 
         public async Task<Query> GetQueryByIdAsync(int? id)
         {
-            return await _context.Query.FindAsync(id);
+            return await _context.Query.Include(x => x.User).FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public bool QueryExists(int id)

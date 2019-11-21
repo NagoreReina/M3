@@ -4,39 +4,44 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Query</h4>
+<h1>¿Estas seguro?</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Resolved" /> @Html.DisplayNameFor(model => model.Resolved)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        <dl class="row">
+            <dt class="col-sm-2">
+                Nick
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.Nick
+            </dd>
+            <dt class="col-sm-2">
+                Nombre
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.Name @Model.User.LastName
+            </dd>
+            <dt class="col-sm-2">
+                Fecha
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Date
+            </dd>
+        </dl>
+        <div>
+            <p>Pulsa el botón para dar la consulta como resuelta</p>
+        </div>
+        <div>
+            <form asp-action="ChangeToResolved">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Resuelta" class="btn btn-primary" /> 
+            </form>
+        </div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-route-id="@Model.Id">Volver</a> 
 </div>
 
 @section Scripts {

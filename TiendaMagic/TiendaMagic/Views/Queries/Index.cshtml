@@ -4,44 +4,59 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Consultas</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @*<a asp-action="Create">Ver las Consultas Resueltas</a>*@
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                Nick
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Text)
+                Consulta
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Resolved)
+                Fecha
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Resolved)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (Query query in Model)
+        {
+            if (query.Resolved == false)
+            {
+                <tr>
+                    <td>
+                        @query.User.Nick
+                    </td>
+                    <td>
+                        @{
+                            if (query.Text.Length > 80)
+                            {
+                                string sub = query.Text.Substring(0, 80) + "...";
+                                @sub
+                            }
+                            else
+                            {
+                                @query.Text
+                            }
+                        }
+
+                    </td>
+                    <td>
+                        @query.Date
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@query.Id">Ver</a> |
+                        <a asp-action="Edit" asp-route-id="@query.Id">Resuelta</a>
+                    </td>
+                </tr>
+            }
+
+        }
     </tbody>
 </table>

@@ -88,14 +88,14 @@ namespace TiendaMagic.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     //PARA HACER QUE CADA UNA REDIRECCIONE DONDE DEBE
-                    AppUser user = await _userManager.GetUserAsync(User);
+                    AppUser user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
                     if (await _userManager.IsInRoleAsync(user, "Client"))
                     {
-                        returnUrl = returnUrl ?? Url.Content("~/AppUserPrizes/");
+                        returnUrl = "~/AppUserPrizes/";
                     }
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        returnUrl = returnUrl ?? Url.Content("~/Queries/");
+                        returnUrl = "~/Queries/";
                     }
                     return LocalRedirect(returnUrl);
                 }
