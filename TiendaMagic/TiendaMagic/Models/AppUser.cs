@@ -19,8 +19,11 @@ namespace TiendaMagic.Models
         public string Image { get; set; }
         [MaxLength(10)]
         [MinLength(10)]
-        public int Dci { get; set; }
+        public string Dci { get; set; }
         public int Points { get; set; }
         public double Money { get; set; }
+        public List<Query> Queries { get; set; }
+        public List<Registry> Registries { get; set; }
+        public List<AppUserPrize> AppUserPrizes { get; set; }
     }
 }
