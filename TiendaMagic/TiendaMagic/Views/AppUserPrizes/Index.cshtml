@@ -2,8 +2,22 @@
 
 
     <h1>Esta va a ser la web del Usuario</h1>
+    <div class="row">
 
-<p>
-    <a asp-controller="Queries" asp-action="Create">Consultas</a>
-</p>
+        @foreach (AppUserPrize prize in Model)
+        {
+
+            <div class="card" style="width: 18rem;">
+                <img src="@hamburguesa.Imagen" class="card-img-top" alt="@hamburguesa.Nombre">
+                <div class="card-body">
+                    <h5 class="card-title">@hamburguesa.Nombre</h5>
+                    <p class="card-text">@hamburguesa.Nombre</p>
+                    <p class="card-text">@hamburguesa.Ingredientes</p>
+                </div>
+                <div class="card-body">
+                    <input asp-for="Menu.PrincipalId" type="radio" value="@hamburguesa.Id" />
+                </div>
+            </div>
+        }
+        </div>
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-    <h1>@Model.User.Nick</h1>
+    <h1><a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Nick</a></h1>
 
 <div>
     <h4>@Model.Date</h4>
@@ -14,8 +14,8 @@
             Nombre
         </dt>
         <dd class="col-sm-10">
-            @Model.User.Name @Model.User.LastName
-        </dd>
+            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Name @Model.User.LastName </a>
+</dd>
         <dt class="col-sm-2">
             Consulta
         </dt>

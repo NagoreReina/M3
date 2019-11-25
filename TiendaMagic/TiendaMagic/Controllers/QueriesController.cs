@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,11 @@ namespace TiendaMagic.Controllers
     public class QueriesController : Controller
     {
         private readonly IQueries _queries;
+        private readonly UserManager<AppUser> _userManager;
 
-        public QueriesController(IQueries queries)
+        public QueriesController(IQueries queries, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _queries = queries;
 
         }
@@ -54,14 +57,15 @@ namespace TiendaMagic.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Text,Resolved")] Query query)
+        public async Task<IActionResult> Create(string id, string text, Query query)
         {
-            if (ModelState.IsValid)
-            {
-                await _queries.CreateQueryAsync(query);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(query);
+            query.Date = DateTime.Now;
+            query.Resolved = false;
+            AppUser user = await _userManager.FindByIdAsync(id);
+            query.User = user;
+            query.Text = text;
+            await _queries.CreateQueryAsync(query);
+            return View();
         }
 
         // GET: Queries/Edit/5
