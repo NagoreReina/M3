@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,12 +25,14 @@ namespace TiendaMagic.Controllers
 
         }
         // GET: Queries
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _queries.GetQueryAsync());
         }
 
         // GET: Queries/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,6 +50,7 @@ namespace TiendaMagic.Controllers
         }
 
         // GET: Queries/Create
+        [Authorize(Roles = "Client")]
         public IActionResult Create()
         {
             return View();
@@ -57,6 +61,7 @@ namespace TiendaMagic.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create(string id, string text, Query query)
         {
             query.Date = DateTime.Now;
@@ -65,10 +70,11 @@ namespace TiendaMagic.Controllers
             query.User = user;
             query.Text = text;
             await _queries.CreateQueryAsync(query);
-            return View();
+            return RedirectToAction("Index", "AppUserPrizes");
         }
 
         // GET: Queries/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,6 +96,7 @@ namespace TiendaMagic.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Text,Resolved")] Query query)
         {
             if (id != query.Id)
@@ -120,6 +127,7 @@ namespace TiendaMagic.Controllers
         }
 
         // GET: Queries/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +147,7 @@ namespace TiendaMagic.Controllers
         // POST: Queries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var query = await _queries.GetQueryByIdAsync(id);
@@ -146,6 +155,7 @@ namespace TiendaMagic.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeToResolved(int id)
         {
             Query query = await _queries.GetQueryByIdAsync(id);

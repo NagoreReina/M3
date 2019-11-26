@@ -14,5 +14,6 @@ namespace TiendaMagic.Services
         public Task UpdatePrizeAsync(Prize prize);
         public Task DeletePrizeAsync(Prize prize);
         public bool PrizeExists(int id);
+        public void DeleteFromAppUserPrizes(int prizeId);
     }
 }

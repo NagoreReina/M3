@@ -26,7 +26,14 @@ namespace TiendaMagic.Services
             _context.Prize.Remove(prize);
             await _context.SaveChangesAsync();
         }
-
+        public void DeleteFromAppUserPrizes (int prizeId)
+        {
+            List<AppUserPrize> appUserPrizes = (_context.AppUserPrize.Include(x=>x.Prize).Where(x => x.Prize.Id == prizeId)).ToList();
+            foreach(AppUserPrize userPrize in appUserPrizes)
+            {
+                _context.Remove(userPrize);
+            }
+        }
         public async Task<List<Prize>> GetPrizeAsync()
         {
             return await _context.Prize.ToListAsync();

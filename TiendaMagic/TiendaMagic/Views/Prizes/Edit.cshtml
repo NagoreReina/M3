@@ -9,38 +9,60 @@
 <h4>@Model.Title</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="DateOfExpiry" class="control-label"></label>
-                <input asp-for="DateOfExpiry" class="form-control" />
-                <span asp-validation-for="DateOfExpiry" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
-                <span asp-validation-for="Text" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    Fecha de caducidad
+                </dt>
+                <dd class="col-sm-8">
+                    <div class="form-group">
+                        <input asp-for="DateOfExpiry" class="form-control" />
+                        <span asp-validation-for="DateOfExpiry" class="text-danger"></span>
+                    </div>
+                </dd>
+                <dt class="col-sm-4">
+                    Titulo
+                </dt>
+                <dd class="col-sm-8">
+                    <div class="form-group">
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </dd>
+                <dt class="col-sm-4">
+                    Texto
+                </dt>
+                <dd class="col-sm-8">
+                    <div class="form-group">
+                        <input asp-for="Text" class="form-control" />
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>
+                </dd>
+                <dt class="col-sm-4">
+                    Imagen
+                </dt>
+                <dd class="col-sm-8">
+                    <div class="form-group">
+                        <input asp-for="Image" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                </dd>
+                <dt class="col-sm-4">
+                    Precio
+                </dt>
+                <dd class="col-sm-8">
+                    <div class="form-group">
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </dd>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </dl>
         </form>
     </div>
 </div>

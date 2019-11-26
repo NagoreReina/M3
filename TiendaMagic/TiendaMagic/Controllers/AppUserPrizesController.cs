@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,19 +17,23 @@ namespace TiendaMagic.Controllers
     {
 
         private readonly IAppUserPrizes _appUserPrizes;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AppUserPrizesController(IAppUserPrizes appUserPrizes)
+        public AppUserPrizesController(IAppUserPrizes appUserPrizes, UserManager<AppUser> userManager)
         {
             _appUserPrizes = appUserPrizes;
+            _userManager = userManager;
         }
 
         // GET: AppUserPrizes
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Index()
         {
             return View(await _appUserPrizes.GetAppUserPrizeAsync());
         }
 
         // GET: AppUserPrizes/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,6 +51,7 @@ namespace TiendaMagic.Controllers
         }
 
         // GET: AppUserPrizes/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -53,19 +60,33 @@ namespace TiendaMagic.Controllers
         // POST: AppUserPrizes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] AppUserPrize appUserPrize)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePrizeUser(int prize, string user)
         {
-            if (ModelState.IsValid)
+            Prize newPrize = _appUserPrizes.SearchForPrize(prize);
+            AppUser newUser = await _userManager.FindByIdAsync(user);
+            if (newUser.Points >= newPrize.Price)
             {
-                await _appUserPrizes.CreateAppUserPrizeAsync(appUserPrize);
-                return RedirectToAction(nameof(Index));
+                newUser.Points -= newPrize.Price;
+                await _userManager.UpdateAsync(newUser);
+                AppUserPrize appUserPrize = new AppUserPrize()
+                {
+                    Prize = newPrize,
+                    User = newUser
+                };
+                if (ModelState.IsValid)
+                {
+                    await _appUserPrizes.CreateAppUserPrizeAsync(appUserPrize);
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(appUserPrize);
             }
-            return View(appUserPrize);
+            return View();
         }
 
         // GET: AppUserPrizes/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +107,7 @@ namespace TiendaMagic.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id")] AppUserPrize appUserPrize)
         {
             if (id != appUserPrize.Id)
@@ -116,6 +138,7 @@ namespace TiendaMagic.Controllers
         }
 
         // GET: AppUserPrizes/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,6 +158,7 @@ namespace TiendaMagic.Controllers
         // POST: AppUserPrizes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var appUserPrize = await _appUserPrizes.GetAppUserPrizeByIdAsync(id);

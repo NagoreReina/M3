@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using TiendaMagic.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TiendaMagic.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -53,16 +55,20 @@ namespace TiendaMagic.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id")] AppUser user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id", "Name", "LastName", "Nick", "Dci", "Email", "Image", "Points", "Money","PhoneNumber")] AppUser user)
         {
             if (id != user.Id)
             {
                 return NotFound();
             }
-
+            AppUser editUser = await _userManager.FindByIdAsync(user.Id);
+            editUser.Name = user.Name;
+            editUser.LastName = user.LastName;
+            editUser.Dci = user.Dci;
+            editUser.PhoneNumber = user.PhoneNumber;
             if (ModelState.IsValid)
             {
-                await _userManager.UpdateAsync(user);
+                await _userManager.UpdateAsync(editUser);
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -80,6 +86,22 @@ namespace TiendaMagic.Controllers
             user.Money += money;
             await _userManager.UpdateAsync(user);
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        public async Task<IActionResult> CreateUser(AppUser newUser)
+        {
+            newUser.UserName = newUser.Email;
+            newUser.EmailConfirmed = true;
+            if (ModelState.IsValid)
+            {
+                await _userManager.CreateAsync(newUser,"123Abc.");
+                await _userManager.AddToRoleAsync(newUser, "Client");
+                return RedirectToAction(nameof(Index));
+            }
+            return View(newUser);
         }
     }
 }

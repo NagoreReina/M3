@@ -34,7 +34,7 @@
 @foreach (Prize prize in Model) {
         <tr>
             <td>
-                @prize.Image
+                <img src="@prize.Image" alt="@prize.Title" class="prize-img" /> 
             </td>
             <td>
                 @prize.Title

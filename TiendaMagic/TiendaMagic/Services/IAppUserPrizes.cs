@@ -8,12 +8,12 @@ namespace TiendaMagic.Services
 {
     public interface IAppUserPrizes
     {
-        public Task<List<AppUserPrize>> GetAppUserPrizeAsync();
+        public Task<List<Prize>> GetAppUserPrizeAsync();
         public Task<AppUserPrize> GetAppUserPrizeByIdAsync(int? id);
         public Task CreateAppUserPrizeAsync(AppUserPrize userPrize);
         public Task UpdateAppUserPrizeAsync(AppUserPrize userPrize);
         public Task DeleteAppUserPrizeAsync(AppUserPrize userPrize);
-
+        public Prize SearchForPrize(int id);
         public bool AppUserPrizeExists(int id);
     }
 }

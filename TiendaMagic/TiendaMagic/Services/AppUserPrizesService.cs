@@ -18,13 +18,17 @@ namespace TiendaMagic.Services
 
         public bool AppUserPrizeExists(int id)
         {
-            return _context.AppUserPrize.Any(e => e.Id == id);
+            return _context.AppUserPrize.Include(x=>x.Prize).Any(e => e.Id == id);
         }
 
         public async Task CreateAppUserPrizeAsync(AppUserPrize userPrize)
         {
             await _context.AddAsync(userPrize);
             await _context.SaveChangesAsync();
+        }
+        public Prize SearchForPrize(int id)
+        {
+            return _context.Prize.Find(id);
         }
 
         public async Task DeleteAppUserPrizeAsync(AppUserPrize userPrize)
@@ -33,9 +37,9 @@ namespace TiendaMagic.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<AppUserPrize>> GetAppUserPrizeAsync()
+        public async Task<List<Prize>> GetAppUserPrizeAsync()
         {
-            return await _context.AppUserPrize.ToListAsync();
+            return await _context.Prize.ToListAsync();
         }
 
         public async Task<AppUserPrize> GetAppUserPrizeByIdAsync(int? id)

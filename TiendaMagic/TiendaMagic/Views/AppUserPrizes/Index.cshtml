@@ -1,23 +1,45 @@
-﻿@model IEnumerable<TiendaMagic.Models.AppUserPrize>
+﻿@model IEnumerable<TiendaMagic.Models.Prize>
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<AppUser> _userManager;
 
-
-    <h1>Esta va a ser la web del Usuario</h1>
     <div class="row">
-
-        @foreach (AppUserPrize prize in Model)
-        {
-
-            <div class="card" style="width: 18rem;">
-                <img src="@hamburguesa.Imagen" class="card-img-top" alt="@hamburguesa.Nombre">
-                <div class="card-body">
-                    <h5 class="card-title">@hamburguesa.Nombre</h5>
-                    <p class="card-text">@hamburguesa.Nombre</p>
-                    <p class="card-text">@hamburguesa.Ingredientes</p>
-                </div>
-                <div class="card-body">
-                    <input asp-for="Menu.PrincipalId" type="radio" value="@hamburguesa.Id" />
-                </div>
-            </div>
-        }
+        @{AppUser user = await _userManager.GetUserAsync(User); }
+        <div class="col">
+            <h3>Saldo: @user.Money €</h3>
         </div>
+        <div class="col">
+            <h3>Puntos: @user.Points P</h3>
+        </div>
+
+    </div>
+<div class="row">
+
+    @foreach (Prize prize in Model)
+    {
+    <div class="card" style="width: 18rem;">
+        <img src="@prize.Image" class="card-img-top" alt="@prize.Title">
+        <div class="card-body">
+            <h5 class="card-title">@prize.Title</h5>
+            <p class="card-text">@prize.Text</p>
+            @if((prize.DateOfExpiry - DateTime.Now).TotalDays <= 15)
+            {
+                <p class="card-text alert-danger">Fecha de caducidad: @prize.DateOfExpiry.ToShortDateString()</p>
+            }
+            else
+            {
+                <p class="card-text">Fecha de caducidad: @prize.DateOfExpiry.ToShortDateString()</p>
+            }
+            <p class="card-text">Precio: @prize.Price</p>
+        </div>
+        <div class="card-body">
+            @if (true)
+            {
+                //Hacer que salga el boton solo si no lo tienes ya (View Model va a hacer falta)
+                <a asp-controller="AppUserPrizes" asp-route-prize="@prize.Id" asp-route-user="@user.Id" asp-action="CreatePrizeUser" class="btn btn-primary">Adquirir</a>
+
+            }
+        </div>
+    </div>
+    }
+</div>
 

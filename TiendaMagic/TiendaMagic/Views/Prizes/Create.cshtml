@@ -44,7 +44,12 @@
                 </dt>
                 <dd class="col-sm-8">
                     <div class="form-group">
-                        @*Esto sera de seleccionar una de las que aparezcan*@
+                        @*Esto sera de seleccionar una de las que aparezcan (7 porque actualmente tengo 7 imagenes)*@
+                        @for(int i = 1; i<9; i++)
+                        {
+                            string value = i + ".png";
+                        <img src="~/Img/@value" alt="Imagen Premio" class="prize-img" />
+                        }
                         <input asp-for="Image" class="form-control" />
                         <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
