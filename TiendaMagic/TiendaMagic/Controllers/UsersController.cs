@@ -95,13 +95,14 @@ namespace TiendaMagic.Controllers
         {
             newUser.UserName = newUser.Email;
             newUser.EmailConfirmed = true;
+            newUser.Image = "userImg/1.png";
             if (ModelState.IsValid)
             {
                 await _userManager.CreateAsync(newUser,"123Abc.");
                 await _userManager.AddToRoleAsync(newUser, "Client");
                 return RedirectToAction(nameof(Index));
             }
-            return View(newUser);
+            return RedirectToAction(nameof(Create));
         }
     }
 }
