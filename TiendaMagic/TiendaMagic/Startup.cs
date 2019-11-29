@@ -41,6 +41,7 @@ namespace TiendaMagic
             services.AddTransient<IPrizes, PrizesService>();
             services.AddTransient<IQueries, QueriesService>();
             services.AddTransient<IRegistries, RegistriesService>();
+            services.AddTransient<IUser, UserServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

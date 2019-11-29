@@ -1,76 +1,93 @@
-﻿@model TiendaMagic.Models.AppUser
+﻿@model TiendaMagic.Models.ViewModels.AdminSeeUserAndPrizesVM
 @{
     ViewData["Title"] = "Details";
 }
+<div class="page-wrapper paddingLeft paddingRight">
+    <h1>@Model.User.Nick</h1>
 
-<h1>@Model.Nick</h1>
+    <div>
+        <h4>@Model.User.Name  @Model.User.LastName</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                DCI
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.Dci
+            </dd>
+            <dt class="col-sm-2">
+                Telefono
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.PhoneNumber
+            </dd>
+            <dt class="col-sm-2">
+                Email
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.Email
+            </dd>
+            <dt class="col-sm-2">
+                Puntos
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.Points P
+            </dd>
+            <dt class="col-sm-2">
+                Añadir / Quitar puntos
+            </dt>
+            <dd class="col-sm-10">
+                <form asp-action="ChangePoints" asp-route-id="@Model.User.Id" class="row">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group col-xs-2">
+                        <input type="number" class="form-control" name="points" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Aplicar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </dd>
+            <dt class="col-sm-2">
+                Saldo
+            </dt>
+            <dd class="col-sm-10">
+                @Model.User.Money €
+            </dd>
+            <dt class="col-sm-2">
+                Añadir / Quitar saldo
+            </dt>
+            <dd class="col-sm-10">
+                <form asp-action="ChangeMoney" asp-route-id="@Model.User.Id" class="row">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group col-xs-2">
+                        <input type="number" step="0.01" name="money" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Aplicar" class="btn btn-primary" />
+                    </div>
+                </form>
+            </dd>
+            <dt class="col-sm-2">
+                Premios Adquiridos
+            </dt>
+            <dd class="col-sm-10">
+                <ul>
+                    @foreach (AppUserPrize userPrize in Model.UserPrizes)
+                    {
+                        <li>
+                            <a asp-controller="Prizes" asp-action="Details" asp-route-id="@userPrize.Prize.Id">@userPrize.Prize.Title</a> -
+                            <a asp-controller="AppUserPrizes" asp-action="DeleteConfirmed" asp-route-id="@userPrize.Id">Canjear</a>
 
-<div>
-    <h4>@Model.Name  @Model.LastName</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            DCI
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Dci
-        </dd>
-        <dt class="col-sm-2">
-            Telefono
-        </dt>
-        <dd class="col-sm-10">
-            @Model.PhoneNumber
-        </dd>
-        <dt class="col-sm-2">
-            Email
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Email
-        </dd>
-        <dt class="col-sm-2">
-            Puntos
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Points P
-        </dd>
-        <dt class="col-sm-2">
-            Añadir / Quitar puntos
-        </dt>
-        <dd class="col-sm-10">
-            <form asp-action="ChangePoints" asp-route-id="@Model.Id" class="row">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group col-xs-2">
-                    <input type="number" class="form-control" name="points" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Aplicar" class="btn btn-primary" />
-                </div>
-            </form>
-        </dd>
-        <dt class="col-sm-2">
-            Saldo
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Money €
-        </dd>
-        <dt class="col-sm-2">
-            Añadir / Quitar saldo
-        </dt>
-        <dd class="col-sm-10">
-            <form asp-action="ChangeMoney" asp-route-id="@Model.Id" class="row">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group col-xs-2">
-                    <input type="text" name="money" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Aplicar" class="btn btn-primary" />
-                </div>
-            </form>
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
-    <a asp-action="Index">Volver</a>
+
+                        </li>
+                    }
+                </ul>
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.User.Id">Editar</a> |
+        <a asp-action="Index">Volver</a>
+    </div>
 </div>
 

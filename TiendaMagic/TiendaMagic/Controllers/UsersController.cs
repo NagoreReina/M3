@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using TiendaMagic.Models;
 using Microsoft.AspNetCore.Authorization;
+using TiendaMagic.Services;
+using TiendaMagic.Data;
+using TiendaMagic.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace TiendaMagic.Controllers
 {
@@ -13,11 +17,16 @@ namespace TiendaMagic.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        
+        private readonly IRegistries _registry;
+        private readonly IUser _user;
         public List<AppUser> appUsers = new List<AppUser>();
 
-        public UsersController(UserManager<AppUser> userManager)
+        public UsersController(UserManager<AppUser> userManager, IRegistries registry, IUser user)
         {
+            _registry = registry;
             _userManager = userManager;
+            _user = user;
         }
         public async Task<IActionResult> IndexAsync()
         {
@@ -30,14 +39,19 @@ namespace TiendaMagic.Controllers
             {
                 return NotFound();
             }
-
+            List<AppUserPrize> appUserPrizes = _user.GetAppUserPrizes(id);
             AppUser user = await _userManager.FindByIdAsync(id);
+            AdminSeeUserAndPrizesVM userAndPrizesVM = new AdminSeeUserAndPrizesVM()
+            {
+                User = user,
+                UserPrizes = appUserPrizes
+            };
             if (user == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(userAndPrizesVM);
         }
         public async Task<IActionResult> Edit(string id)
         {
@@ -73,18 +87,21 @@ namespace TiendaMagic.Controllers
             }
             return View(user);
         }
-        public async Task<IActionResult> ChangePoints(string? id, int points)
+        public async Task<IActionResult> ChangePoints(string id, int points)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
             user.Points += points;
             await _userManager.UpdateAsync(user);
+            //HAY QUE HACER UN REGISTRO
+            await _registry.CreateRegistryAsync("Points", points, user);
             return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> ChangeMoney(string? id, double money)
-        {
+        public async Task<IActionResult> ChangeMoney(string id, double money)
+        {   
             AppUser user = await _userManager.FindByIdAsync(id);
             user.Money += money;
             await _userManager.UpdateAsync(user);
+            await _registry.CreateRegistryAsync("Money", money, user);
             return RedirectToAction(nameof(Index));
         }
         public IActionResult Create()
@@ -103,6 +120,27 @@ namespace TiendaMagic.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Create));
+        }
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            AppUser user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        public async Task<IActionResult> ConfirmDelete(string id)
+        {
+            AppUser user = await _userManager.FindByIdAsync(id);
+            await _userManager.RemoveFromRoleAsync(user, "Client");
+            await _userManager.AddToRoleAsync(user, "Deleted");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

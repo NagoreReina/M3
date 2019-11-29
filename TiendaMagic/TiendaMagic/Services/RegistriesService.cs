@@ -15,8 +15,15 @@ namespace TiendaMagic.Services
         {
             _context = context;
         }
-        public async Task CreateRegistryAsync(Registry registry)
+        public async Task CreateRegistryAsync(string value, double quantity, AppUser user)
         {
+            Registry registry = new Registry()
+            {
+                Value = value,
+                Quantity = quantity,
+                User = user,
+                Date = DateTime.Now
+            };
             await _context.AddAsync(registry);
             await _context.SaveChangesAsync();
         }
@@ -29,7 +36,7 @@ namespace TiendaMagic.Services
 
         public async Task<List<Registry>> GetRegistryAsync()
         {
-            return await _context.Registry.ToListAsync();
+            return await _context.Registry.Include(x=>x.User).OrderByDescending(x=>x.Date).ToListAsync();
         }
 
         public async Task<Registry> GetRegistryByIdAsync(int? id)

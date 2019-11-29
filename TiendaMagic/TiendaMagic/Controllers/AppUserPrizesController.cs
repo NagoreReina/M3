@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TiendaMagic.Data;
 using TiendaMagic.Models;
+using TiendaMagic.Models.ViewModels;
 using TiendaMagic.Services;
 
 namespace TiendaMagic.Controllers
@@ -17,19 +18,28 @@ namespace TiendaMagic.Controllers
     {
 
         private readonly IAppUserPrizes _appUserPrizes;
+        private readonly IRegistries _registry;
         private readonly UserManager<AppUser> _userManager;
 
-        public AppUserPrizesController(IAppUserPrizes appUserPrizes, UserManager<AppUser> userManager)
+        public AppUserPrizesController(IAppUserPrizes appUserPrizes, UserManager<AppUser> userManager, IRegistries registry)
         {
             _appUserPrizes = appUserPrizes;
             _userManager = userManager;
+            _registry = registry;
         }
 
         // GET: AppUserPrizes
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Index()
         {
-            return View(await _appUserPrizes.GetAppUserPrizeAsync());
+            List<Prize> prizes = await _appUserPrizes.GetPrizeAsync();
+            List<AppUserPrize> userPrizes = await _appUserPrizes.GetAppUserPrizeAsync();
+            UserBuyPrizeVM userBuyPrizeVM = new UserBuyPrizeVM()
+            {
+                Prizes = prizes,
+                UserPrizes = userPrizes
+            };
+            return View(userBuyPrizeVM);
         }
 
         // GET: AppUserPrizes/Details/5
@@ -77,12 +87,13 @@ namespace TiendaMagic.Controllers
                 };
                 if (ModelState.IsValid)
                 {
+                    await _registry.CreateRegistryAsync("Buy", newPrize.Price, newUser);
                     await _appUserPrizes.CreateAppUserPrizeAsync(appUserPrize);
                     return RedirectToAction(nameof(Index));
                 }
                 return View(appUserPrize);
             }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: AppUserPrizes/Edit/5
@@ -156,14 +167,14 @@ namespace TiendaMagic.Controllers
         }
 
         // POST: AppUserPrizes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var appUserPrize = await _appUserPrizes.GetAppUserPrizeByIdAsync(id);
             await _appUserPrizes.DeleteAppUserPrizeAsync(appUserPrize);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Queries");
         }
     }
 }

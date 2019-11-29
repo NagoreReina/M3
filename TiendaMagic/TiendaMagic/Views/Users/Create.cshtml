@@ -2,9 +2,10 @@
 @{
     ViewData["Title"] = "Create";
 }
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateUser">
+<div class="page-wrapper paddingLeft paddingRight">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="CreateUser">
                 <h4>Registrar un nuevo cliente</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -13,11 +14,6 @@
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                @*<div class="form-group">
-                    <h5>Contraseña</h5>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>*@
                 <div class="form-group">
                     <h5>Nombre</h5>
                     <input asp-for="Name" class="form-control" />
@@ -39,6 +35,7 @@
                     <span asp-validation-for="Dci" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Registrar</button>
-        </form>
+            </form>
+        </div>
     </div>
-    </div>
+</div>

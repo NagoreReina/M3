@@ -106,7 +106,9 @@ namespace TiendaMagic.Areas.Identity.Pages.Account
                     LastName = Input.LastName,
                     Nick = Input.Nick,
                     Image = Input.Image,
-                    Dci = Input.Dci
+                    Dci = Input.Dci,
+                    Points = 100,
+                   
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -132,6 +134,7 @@ namespace TiendaMagic.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        returnUrl = "~/AppUserPrizes/";
                         return LocalRedirect(returnUrl);
                     }
                 }

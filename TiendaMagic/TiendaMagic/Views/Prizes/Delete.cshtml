@@ -3,49 +3,50 @@
 @{
     ViewData["Title"] = "Delete";
 }
+<div class="page-wrapper paddingLeft paddingRight">
+    <h1>Eliminar</h1>
 
-<h1>Eliminar</h1>
+    <h3>¿Estas seguro de querer eliminar este premio?</h3>
+    <div>
+        <h4>Prize</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Fecha de caducidad
+            </dt>
+            <dd class="col-sm-10">
+                @Model.DateOfExpiry.ToString("dd/MM/yyyy")
+            </dd>
+            <dt class="col-sm-2">
+                Titulo
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Title
+            </dd>
+            <dt class="col-sm-2">
+                Texto
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Text
+            </dd>
+            <dt class="col-sm-2">
+                Imagen
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Image
+            </dd>
+            <dt class="col-sm-2">
+                Precio
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Price
+            </dd>
+        </dl>
 
-<h3>¿Estas seguro de querer eliminar este premio?</h3>
-<div>
-    <h4>Prize</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Fecha de caducidad
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.DateOfExpiry.ToString("dd/MM/yyyy")
-        </dd>
-        <dt class = "col-sm-2">
-            Titulo
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Title
-        </dd>
-        <dt class = "col-sm-2">
-            Texto
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Text
-        </dd>
-        <dt class = "col-sm-2">
-            Imagen
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Image
-        </dd>
-        <dt class = "col-sm-2">
-            Precio
-        </dt>
-        <dd class = "col-sm-10">
-            @Model.Price
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Index">Volver</a>
-    </form>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            <a asp-action="Index">Volver</a>
+        </form>
+    </div>
 </div>

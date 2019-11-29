@@ -6,33 +6,31 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Query</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        @{ 
-            AppUser user = await _userManager.GetUserAsync(User);
-        }
-        <form asp-action="Create" asp-route-id=@user.Id>
-            <div class="row">
-                <div class="col-sm-4">
-                    <p>
-                        Introduce aqui tu consulta
-                    </p>
-                </div>
-                <div class="col-sm-10">
-                    <div class="form-group">
-                        <textarea asp-for="Text" class="form-control"></textarea>
-                        <span asp-validation-for="Text" class="text-danger"></span>
+<div class="page-wrapper paddingLeft paddingRight">
+    <h1>Realizar una consulta</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6 align-content-center">
+            @{
+                AppUser user = await _userManager.GetUserAsync(User);
+            }
+            <form asp-action="Create" asp-route-id=@user.Id class="form-horizontal">
+                <div class="row">
+                    <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Introduce tu mensaje</label>
+                    <div class="col-sm-10">
+                        <div class="form-group">
+                            <textarea asp-for="Text" class="form-control"></textarea>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="border-top">
+                    <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-controller="AppUserPrizes" asp-action="Index">Volver</a>
     </div>
 </div>
 @*<div class="row">
@@ -62,9 +60,7 @@
     </div>*@
 
 
-<div>
-    <a asp-controller="AppUserPrizes" asp-action="Index">Volver</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

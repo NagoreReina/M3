@@ -30,6 +30,10 @@ namespace TiendaMagic.Controllers
         {
             return View(await _queries.GetQueryAsync());
         }
+        public async Task<IActionResult> ResolvedQueries()
+        {
+            return View(await _queries.GetQueryAsync());
+        }
 
         // GET: Queries/Details/5
         [Authorize(Roles = "Admin")]

@@ -10,7 +10,7 @@ namespace TiendaMagic.Services
     {
         public Task<List<Registry>> GetRegistryAsync();
         public Task<Registry> GetRegistryByIdAsync(int? id);
-        public Task CreateRegistryAsync(Registry registry);
+        public Task CreateRegistryAsync(string value, double quantity, AppUser user);
         public Task UpdateRegistryAsync(Registry registry);
         public Task DeleteRegistryAsync(Registry registry);
         public bool RegistryExists(int id);

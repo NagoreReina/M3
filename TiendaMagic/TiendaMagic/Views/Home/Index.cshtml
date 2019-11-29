@@ -1,8 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div class="auth-wrapper bg-dark">
+    <div class="videoBackground">
+        <div class="overlay"></div>
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+            <source src="~/Video/BackGroundVideo.mp4" type="video/mp4">
+        </video>
+        <div class="container h-100">
+            <div class="d-flex h-100 text-center align-items-center activateWrap">
+                <div class="w-100 text-white">
+                    <h1 class="display-3">¡Hola!</h1>
+                    <p class="lead mb-0">¡Bienvenido/a a la web de gestión de nuestra tienda!</p>
+                    <p class="lead mb-0">Aquí podrás consultar tu saldo, canjear tus puntos y realizar consultas.</p>
+                </div>
+                <div class="w-100">
+                    <div class="display-3">
+                        <a class="btn btn-primary lead mb-0" asp-area="Identity" asp-page="/Account/Register" role="button">Registrarse</a>
+                    </div>
+                    <div class="display-3">
+                        <a class="btn btn-primary lead mb-0" asp-area="Identity" asp-page="/Account/Login" role="button">Entrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

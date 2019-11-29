@@ -46,25 +46,32 @@ namespace TiendaMagic.Controllers
         }
 
         // GET: Registries/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Registries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Value,Quantity")] Registry registry)
-        {
-            if (ModelState.IsValid)
-            {
-                await _registries.CreateRegistryAsync(registry);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(registry);
-        }
+        //public async Task<IActionResult> Create(string value, double quantity, AppUser user)
+        //{
+        //    Registry registry = new Registry()
+        //    {
+        //        Value = value,
+        //        Quantity = quantity,
+        //        User = user,
+        //        Date = DateTime.Now
+        //    };
+        //    if (ModelState.IsValid)
+        //    {
+        //        //await _registries.CreateRegistryAsync(registry);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(registry);
+        //}
 
         // GET: Registries/Edit/5
         public async Task<IActionResult> Edit(int? id)

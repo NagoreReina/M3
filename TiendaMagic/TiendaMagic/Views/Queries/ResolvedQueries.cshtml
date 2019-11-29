@@ -1,0 +1,68 @@
+﻿@model IEnumerable<TiendaMagic.Models.Query>
+
+@{
+    ViewData["Title"] = "ResolvedQueries";
+}
+    <div class="page-wrapper paddingRight paddingLeft">
+        <h1>Consultas resueltas</h1>
+
+        <a asp-controller="Queries" asp-action="Index">Volver</a>
+        <div class="table-responsive">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table id="zero_config" class="table table-striped table-bordered dataTable">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    Nick
+                                </th>
+                                <th>
+                                    Consulta
+                                </th>
+                                <th>
+                                    Fecha
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Query query in Model)
+                            {
+                                if (query.Resolved == true)
+                                {
+                                    <tr class="odd" role="row">
+                                        <td>
+                                            <a asp-controller="Users" asp-action="Details" asp-route-id="@query.User.Id">@query.User.Nick</a>
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (query.Text.Length > 80)
+                                                {
+                                                    string sub = query.Text.Substring(0, 80) + "...";
+                                                    @sub
+                                                }
+                                                else
+                                                {
+                                                    @query.Text
+                                                }
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @query.Date
+                                        </td>
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@query.Id">Ver</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>

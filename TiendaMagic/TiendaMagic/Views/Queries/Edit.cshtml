@@ -3,47 +3,48 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="page-wrapper paddingLeft paddingRight">
+    <h1>¿Estas seguro?</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Nick
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.User.Nick
+                </dd>
+                <dt class="col-sm-2">
+                    Nombre
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.User.Name @Model.User.LastName
+                </dd>
+                <dt class="col-sm-2">
+                    Fecha
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Date
+                </dd>
+            </dl>
+            <div>
+                <p>Pulsa el botón para dar la consulta como resuelta</p>
+            </div>
+            <div>
+                <form asp-action="ChangeToResolved">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Resuelta" class="btn btn-primary" />
+                </form>
+            </div>
+        </div>
+    </div>
 
-<h1>¿Estas seguro?</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <dl class="row">
-            <dt class="col-sm-2">
-                Nick
-            </dt>
-            <dd class="col-sm-10">
-                @Model.User.Nick
-            </dd>
-            <dt class="col-sm-2">
-                Nombre
-            </dt>
-            <dd class="col-sm-10">
-                @Model.User.Name @Model.User.LastName
-            </dd>
-            <dt class="col-sm-2">
-                Fecha
-            </dt>
-            <dd class="col-sm-10">
-                @Model.Date
-            </dd>
-        </dl>
-        <div>
-            <p>Pulsa el botón para dar la consulta como resuelta</p>
-        </div>
-        <div>
-            <form asp-action="ChangeToResolved">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Resuelta" class="btn btn-primary" /> 
-            </form>
-        </div>
+    <div>
+        <a asp-action="Details" asp-route-id="@Model.Id">Volver</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Details" asp-route-id="@Model.Id">Volver</a> 
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

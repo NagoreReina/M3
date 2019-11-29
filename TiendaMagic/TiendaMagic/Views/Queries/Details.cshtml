@@ -3,28 +3,32 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<div class="page-wrapper paddingLeft paddingRight">
     <h1><a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Nick</a></h1>
 
-<div>
-    <h4>@Model.Date</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Nombre
-        </dt>
-        <dd class="col-sm-10">
-            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Name @Model.User.LastName </a>
-</dd>
-        <dt class="col-sm-2">
-            Consulta
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Text
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Resuelta</a> |
-    <a asp-action="Index">Volver</a>
+    <div>
+        <h4>@Model.Date</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Nombre
+            </dt>
+            <dd class="col-sm-10">
+                <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.Name @Model.User.LastName </a>
+            </dd>
+            <dt class="col-sm-2">
+                Consulta
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Text
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @if (Model.Resolved == false)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id">Resuelta</a>
+        }
+        | <a asp-action="Index">Volver</a>
+    </div>
 </div>

@@ -60,7 +60,7 @@ namespace TiendaMagic.Controllers
         public async Task<IActionResult> Create([Bind("Id,DateOfExpiry,Title,Text,Image,Price")] Prize prize)
         {
             //ESTO DE MOMENTO PARA QUE SALGA ALGO--------------------
-            prize.Image = "~/Img/6.png";
+            //prize.Image = "/Img/6.png";
 
             if (ModelState.IsValid)
             {

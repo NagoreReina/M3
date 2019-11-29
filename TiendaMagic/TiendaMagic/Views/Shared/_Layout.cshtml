@@ -8,82 +8,172 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TiendaMagic</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_Darkly.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_Darkly.css" />*@
+    <link rel="stylesheet" href="~/assets/extra-libs/DataTables/datatables.css" />
+    <link rel="stylesheet" href="../../assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/extra-libs/multicheck/multicheck.css">
+    <link rel="stylesheet" href="~/assets/css/style.css" />
+    <link rel="stylesheet" href="../../assets/libs/magnific-popup/dist/magnific-popup.css">
+    <link rel="stylesheet" href="../../dist/css/style.min.css">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
-            <div class="container">
+    <header class="topbar" data-navbarbg="skin5">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+            <div class="navbar-header" data-logobg="skin5">
+                <!-- Logo -->
+                @{
+                    string controller = "";
+                }
                 @if (_signInManager.IsSignedIn(User))
                 {
                     AppUser user = await _userManager.GetUserAsync(User);
                     if (await _userManager.IsInRoleAsync(user, "Client"))
                     {
-                        <a class="navbar-brand" asp-area="" asp-controller="AppUserPrizes" asp-action="Index">TiendaMagic</a>
+                        controller = "AppUserPrizes";
                     }
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        <a class="navbar-brand" asp-area="" asp-controller="Queries" asp-action="Index">TiendaMagic</a>
+                        controller = "Queries";
                     }
                 }
                 else
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TiendaMagic</a>
+                    controller = "Home";
                 }
-
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
+                <a class="navbar-brand" asp-area="" asp-controller="@controller" asp-action="Index">
+                    <!-- Logo icon -->
+                    <b class="logo-icon p-l-10">
+                        <img src="~/assets/images/logo-icon.png" alt="homepage" class="light-logo">
+                    </b>
+                    <!--End Logo icon -->
+                    <!-- Logo text -->
+                    <span class="logo-text">
+                        <img src="~/assets/images/logo-text.png" alt="homepage" class="light-logo">
+                    </span>
+                </a>
+                <!-- End Logo -->
+            </div>
+            <div class="navbar-collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                <!-- toggle and nav items -->
+                <!-- ============================================================== -->
+                <ul class="navbar-nav float-left mr-auto">
                     @if (_signInManager.IsSignedIn(User))
                     {
                         AppUser user = await _userManager.GetUserAsync(User);
                         if (await _userManager.IsInRoleAsync(user, "Admin"))
                         {
-
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Usuarios</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Prizes" asp-action="Index">Premios</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Queries" asp-action="Index">Consultas</a>
-                                </li>
-                            </ul>
+                            <li class="nav-item">
+                                <a class="nav-link waves-effect waves-dark" asp-area="" asp-controller="Users" asp-action="Index" role="button" aria-haspopup="true" aria-expanded="false">Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link waves-effect waves-dark" asp-area="" asp-controller="Prizes" asp-action="Index" role="button" aria-haspopup="true" aria-expanded="false">Premios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link waves-effect waves-dark" asp-area="" asp-controller="Queries" asp-action="Index" role="button" aria-haspopup="true" aria-expanded="false">Consultas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link waves-effect waves-dark" asp-area="" asp-controller="Registries" asp-action="Index" role="button" aria-haspopup="true" aria-expanded="false">Registros</a>
+                            </li>
                         }
                         else if (await _userManager.IsInRoleAsync(user, "Client"))
                         {
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Queries" asp-action="Create">Hacer una consulta</a>
-                                </li>
-                            </ul>
+                            <li class="nav-item">
+                                <a class="nav-link waves-effect waves-dark" asp-area="" asp-controller="Queries" asp-action="Create" role="button" aria-haspopup="true" aria-expanded="false">Hacer una consulta</a>
+                            </li>
+
                         }
                     }
+                </ul>
+                <!-- Right side toggle and nav items -->
+                <!-- ============================================================== -->
+                <ul class="navbar-nav float-right">
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" data-toggle="dropdown">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            AppUser user = await _userManager.GetUserAsync(User);
+                            if(user.Image != null)
+                            {
+                                <img src="@user.Image" alt="user" class="rounded-circle" width="31">
 
-                </div>
+                            }
+                            else
+                            {
+                                <img src="/userImg/1.png" alt="user" class="rounded-circle" width="31">
+                            }
+                        }
+                        else
+                        {
+                                <img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31">
+                        }
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                            @if (_signInManager.IsSignedIn(User))
+                            {
+                                AppUser appUser = await _userManager.GetUserAsync(User);
+                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">¡Hola @appUser.Nick!</a>
+                                <form class="dropdown" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
+                                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+                            }
+                        </div>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container-fluid">
+        <main role="main" class="pb-3 noPaddinButton">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - TiendaMagic - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - TiendaMagic - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/assets/js/custom.js"></script>
+    <script src="~/assets/js/jquery.ui.touch-punch-improved.js"></script>
+    <script src="~/assets/js/sidebarmenu.js"></script>
+    <script src="~/assets/js/waves.js"></script>
+    @*NUEVOS SCRIPTS*@
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="../../assets/libs/popper.js/dist/umd/popper.min.js"></script>
+  @*  <script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>*@
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="../../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="../../assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="../../dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="../../dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="../../dist/js/custom.min.js"></script>
+    <!-- this page js -->
+    <script src="../../assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+    <script src="../../assets/libs/magnific-popup/meg.init.js"></script>
+    <!-- Scripts para tablas -->
+    <script src="../../assets/extra-libs/DataTables/datatables.min.js"></script>
+    <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../../assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
+    <script src="../../assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+    <script>
+        /****************************************
+         *       Basic Table                   *
+         ****************************************/
+        $('#zero_config').DataTable();
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

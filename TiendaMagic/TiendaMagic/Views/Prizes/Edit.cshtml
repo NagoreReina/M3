@@ -3,74 +3,108 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<div class="page-wrapper paddingLeft paddingRight">
+    <h1>Editar</h1>
 
-<h1>Editar</h1>
+    <h4>@Model.Title</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        Fecha de caducidad
+                    </dt>
+                    <dd class="col-sm-8">
+                        <div class="form-group">
+                            <input asp-for="DateOfExpiry" class="form-control" />
+                            <span asp-validation-for="DateOfExpiry" class="text-danger"></span>
+                        </div>
+                    </dd>
+                    <dt class="col-sm-4">
+                        Titulo
+                    </dt>
+                    <dd class="col-sm-8">
+                        <div class="form-group">
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </dd>
+                    <dt class="col-sm-4">
+                        Texto
+                    </dt>
+                    <dd class="col-sm-8">
+                        <div class="form-group">
+                            <input asp-for="Text" class="form-control" />
+                            <span asp-validation-for="Text" class="text-danger"></span>
+                        </div>
+                    </dd>
+                    <dt class="col-sm-4">
+                        Imagen
+                    </dt>
+                    <dd class="col-sm-8">
+                        <div class="input-group mb-3 text-light">
+                            <hr />
+                            <div>
+                                @*AQUIIIIIIIIIIIIIII*@
+                                Opción 1
+                                <img src="/Img/1.png" class="selectImage" />
+                                Opción 2
+                                <img src="/Img/2.png" class="selectImage" />
+                                Opción 3
+                                <img src="/Img/3.png" class="selectImage" />
+                                Opción 4
+                                <img src="/Img/4.png" class="selectImage" />
+                                Opción 5
+                                <img src="/Img/5.png" class="selectImage" />
+                                Opción 6
+                                <img src="/Img/6.png" class="selectImage" />
+                                Opción 7
+                                <img src="/Img/7.png" class="selectImage" />
+                                Opción 8
+                                <img src="/Img/8.png" class="selectImage" />
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label asp-for="Image"></label>
+                                <select class="form-control" asp-for="Image">
+                                    <option value="/Img/1.png">Opción 1</option>
+                                    <option value="/Img/2.png">Opción 2</option>
+                                    <option value="/Img/3.png">Opción 3</option>
+                                    <option value="/Img/4.png">Opción 4</option>
+                                    <option value="/Img/5.png">Opción 5</option>
+                                    <option value="/Img/6.png">Opción 6</option>
+                                    <option value="/Img/7.png">Opción 7</option>
+                                    <option value="/Img/8.png">Opción 8</option>
+                                </select>
+                                <span asp-validation-for="Image" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </dd>
+                    <dt class="col-sm-4">
+                        Precio
+                    </dt>
+                    <dd class="col-sm-8">
+                        <div class="form-group">
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </dd>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </dl>
+            </form>
+        </div>
+    </div>
 
-<h4>@Model.Title</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <dl class="row">
-                <dt class="col-sm-4">
-                    Fecha de caducidad
-                </dt>
-                <dd class="col-sm-8">
-                    <div class="form-group">
-                        <input asp-for="DateOfExpiry" class="form-control" />
-                        <span asp-validation-for="DateOfExpiry" class="text-danger"></span>
-                    </div>
-                </dd>
-                <dt class="col-sm-4">
-                    Titulo
-                </dt>
-                <dd class="col-sm-8">
-                    <div class="form-group">
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                </dd>
-                <dt class="col-sm-4">
-                    Texto
-                </dt>
-                <dd class="col-sm-8">
-                    <div class="form-group">
-                        <input asp-for="Text" class="form-control" />
-                        <span asp-validation-for="Text" class="text-danger"></span>
-                    </div>
-                </dd>
-                <dt class="col-sm-4">
-                    Imagen
-                </dt>
-                <dd class="col-sm-8">
-                    <div class="form-group">
-                        <input asp-for="Image" class="form-control" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
-                    </div>
-                </dd>
-                <dt class="col-sm-4">
-                    Precio
-                </dt>
-                <dd class="col-sm-8">
-                    <div class="form-group">
-                        <input asp-for="Price" class="form-control" />
-                        <span asp-validation-for="Price" class="text-danger"></span>
-                    </div>
-                </dd>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </dl>
-        </form>
+    <div>
+        <a asp-action="Index">Volver</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

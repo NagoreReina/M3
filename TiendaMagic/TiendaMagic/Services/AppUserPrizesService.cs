@@ -37,9 +37,13 @@ namespace TiendaMagic.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Prize>> GetAppUserPrizeAsync()
+        public async Task<List<Prize>> GetPrizeAsync()
         {
             return await _context.Prize.ToListAsync();
+        }
+        public async Task<List<AppUserPrize>> GetAppUserPrizeAsync()
+        {
+            return await _context.AppUserPrize.Include(x=>x.User).ToListAsync();
         }
 
         public async Task<AppUserPrize> GetAppUserPrizeByIdAsync(int? id)
